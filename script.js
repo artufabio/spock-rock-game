@@ -1,4 +1,6 @@
 
+import { startConfetti, stopConfetti, removeConfetti } from './confetti.js';
+
 const playerScoreEl = document.getElementById('playerScore');
 const playerChoiceEl = document.getElementById('playerChoice');
 const computerScoreEl = document.getElementById('computerScore');
@@ -34,6 +36,8 @@ let computerChoice = '';
 // Reset all 'selected' Icons
 function resetSelected() {
   allGameIcons.forEach( icon => icon.classList.remove('selected'));
+  stopConfetti();
+  removeConfetti();
 }
 
 // Reset Score & playerChoice/computerChoice
@@ -47,6 +51,8 @@ function resetAll(){
   resultText.textContent = '';
   resetSelected();
 }
+// Making resetAll function accessible on the global scope. It's necessary since we use script.js as a module
+window.resetAll = resetAll;
 
 // Random computer choice
 function computerRandomChoice() {
@@ -99,6 +105,7 @@ function updateScore(playerChoice){
   } else {
     const choice = choices[playerChoice];
     if (choice.defeats.indexOf(computerChoice) > -1) {
+      startConfetti();
       resultText.textContent = 'You Won!';
       playerScoreEl.textContent = ++playerScore;
     } else {
@@ -145,6 +152,8 @@ function displayPlayerChoice(playerChoice) {
       break;
   }
 }
+// Making displayPlayerChoice function accessible on the global scope. It's necessary since we use script.js as a module
+window.displayPlayerChoice = displayPlayerChoice;
 
 // On startup, set initial values
 resetAll();
